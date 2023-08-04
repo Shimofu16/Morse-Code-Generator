@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <title>Morse Code Generator</title>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-md flex flex-col">
+    <h1 class="text-2xl font-semibold mb-4">Morse Code Converter</h1>
+    <textarea id="inputText" class="w-full h-24 p-2 border rounded focus:outline-none focus:ring focus:border-blue-300 resize-none" placeholder="Enter your text or Morse code here"></textarea>
+
+    <!-- Convert to Morse Code Button -->
+    <button id="convertToMorseBtn" class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Convert to Morse Code</button>
+    <div id="outputMorse" class="mt-4 p-2 border rounded"></div>
+
+    <!-- Convert to Text Button -->
+    <button id="convertToTextBtn" class="mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded">Convert to Text</button>
+    <div id="outputText" class="mt-4 p-2 border rounded"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // Morse code mappings
+    const morseCode = {
+      'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-',
+      'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 
+      'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+      '6': '-....', '7': '--...', '8': '---..', '9': '----.', ' ': '/'
+    };
+
+    // Reverse Morse code mappings
+    const reverseMorseCode = {};
+    for (const char in morseCode) {
+      if (morseCode.hasOwnProperty(char)) {
+        reverseMorseCode[morseCode[char]] = char;
+      }
+    }
+
+    // Function to convert text to Morse code
+    function textToMorse(text) {
+      return text.split('').map(char => morseCode[char.toUpperCase()] || char).join(' ');
+    }
+
+    // Function to convert Morse code to text
+    function morseToText(morseCode) {
+      return morseCode.split(' ').map(code => reverseMorseCode[code] || code).join('');
+    }
+
+    $(document).ready(function() {
+      // Click event for the "Convert to Morse Code" button
+      $('#convertToMorseBtn').click(function() {
+        const inputText = $('#inputText').val();
+        const morseCodeOutput = textToMorse(inputText);
+        $('#outputMorse').text(morseCodeOutput);
+      });
+
+      // Click event for the "Convert to Text" button
+      $('#convertToTextBtn').click(function() {
+        const inputMorse = $('#inputText').val();
+        const textOutput = morseToText(inputMorse);
+        $('#outputText').text(textOutput);
+      });
+    });
+  </script>
+</body>
+</html>
